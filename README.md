@@ -4,10 +4,6 @@ Code for *BrainRoiGNN: An Anatomy-aware Explainable Graph Neural Network for
 Resting-state EEG in Parkinson's Disease* (Scientific Reports): preprocessing, feature
 construction, the model and nested cross-validation training.
 
-Not included: trained weights, baseline models, participant-exclusion logic (excluded
-participants are listed in Supplementary Table S1), evaluation and
-statistics code, attribution code and saved predictions.
-
 ## Data
 
 OpenNeuro **ds007020, version 1.0.0** (not included).
