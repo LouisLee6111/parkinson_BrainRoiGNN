@@ -1,0 +1,36 @@
+# BrainRoiGNN configuration (paths are given on the command line).
+
+preprocessing:
+  l_freq: 1.0                # zero-phase FIR band-pass (MNE firwin defaults)
+  h_freq: 45.0
+  crop_fraction: 0.1         # first and last 10 % of each recording removed
+  event_spacing_s: 2.1       # fixed-length events every 2.1 s ...
+  epoch_length_s: 2.0        # ... truncated to 2.0 s (non-overlapping 2-s epochs)
+  ptp_reject_uV: 150.0       # reject an epoch if any channel exceeds this peak-to-peak
+
+features:
+  welch_nperseg: 500         # Hann window, 50 % overlap
+  bands: [[0.5, 4.0], [4.0, 8.0], [8.0, 12.0], [12.0, 16.0], [16.0, 20.0],
+          [20.0, 24.0], [24.0, 28.0], [28.0, 32.0], [32.0, 36.0], [36.0, 40.0]]
+  butter_order: 4            # zero-phase Butterworth band-pass before the Hilbert transform
+  n_workers: 8
+
+training:
+  seeds: [0, 1, 2]           # outer cross-validation repetitions
+  n_folds: 5
+  inner_holdout_fraction: 0.18
+  threshold_inner_folds: 4
+  hidden: 64
+  gine_layers: 3
+  heads: 4
+  dropout: 0.4
+  weight_decay: 1.0e-4
+  max_epochs: 60             # also the cosine-annealing period
+  patience: 20
+  batch_size: 16
+  # Hyperparameter grid selected on the inner holdout (subject-level AUC; ties -> first entry).
+  grid:
+    - {lr: 3.0e-4, std_node: false}
+    - {lr: 3.0e-4, std_node: true}
+    - {lr: 1.0e-3, std_node: false}
+    - {lr: 1.0e-3, std_node: true}
